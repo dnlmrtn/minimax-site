@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Website</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fff;
+        }
+
+        /* Add scroll padding to account for sticky navbar */
+        html {
+            scroll-padding-top: 120px; /* Adjust based on navbar height */
+        }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            width: 100%;
+        }
+
+        .navbar-content {
+            display: flex;
+            padding: 0rem 2rem;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1440px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+            min-height: 50px;
+            min-width: 50px;
+        }
+
+        .logo img, .logo svg {
+            height: 50px;
+            max-width: 200px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .logo-placeholder {
+            width: 150px;
+            height: 50px;
+            background-color: #f0f0f0;
+            border: 2px dashed #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: #666;
+            border-radius: 4px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background-color: #f8f9fa;
+            color: #666;
+        }
+
+        .nav-links a.active {
+            background-color: #666;
+            color: white;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            padding: 3rem 2rem;
+            min-height: calc(100vh - 82px);
+        }
+
+        .content-section {
+            margin-bottom: 3rem;
+        }
+
+        .hero-section {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16/9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            border-radius: 12px;
+            margin-bottom: 3rem;
+            overflow: hidden;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+            filter: grayscale(30%) brightness(0.8) contrast(0.9);
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(128, 128, 128, 0.6);
+            z-index: 2;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .hero-section h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-section p {
+            font-size: 1.4rem;
+            opacity: 0.95;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            font-weight: 400;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        .section-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #666;
+        }
+
+        /* Savings Grid Section */
+        .savings-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .savings-item {
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .savings-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .savings-video-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1/1;
+            overflow: hidden;
+        }
+
+        .savings-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .savings-text {
+            padding: 1.5rem;
+            text-align: left;
+        }
+
+        .savings-heading {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+        }
+
+        .savings-description {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #666;
+            margin: 0;
+        }
+
+        /* Wide Feature Section */
+        .wide-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 3rem;
+            margin-top: 2rem;
+        }
+
+        .wide-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .wide-heading {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+        }
+
+        .wide-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #666;
+        }
+
+        /* Step items in the wide section */
+        .step-item {
+            margin-bottom: 4rem;
+
+        }
+
+        .step-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .step-item .savings-heading {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-item .wide-description {
+            margin-bottom: 0;
+        }
+
+        .wide-image-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1/1;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .wide-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Referrals Section */
+        .referrals-section {
+            background: linear-gradient(135deg, #22c55e 0%, #15803d 100%);
+            border-radius: 12px;
+            padding: 3rem;
+            text-align: center;
+            color: white;
+            margin: 3rem 0;
+        }
+
+        .referrals-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .referrals-amount {
+            font-size: 4rem;
+            font-weight: 800;
+            margin: 1rem 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .referrals-description {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .referrals-details {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-top: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .referrals-details h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .referrals-details p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #f8f9fa;
+            padding: 2rem;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #e9ecef;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .logo img {
+                max-height: 45px;
+                max-width: 180px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .logo img {
+                max-height: 40px;
+                max-width: 150px;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .hero-section h1 {
+                font-size: 2rem;
+            }
+
+            .hero-section p {
+                font-size: 1.2rem;
+            }
+
+            .main-content {
+                padding: 2rem 1rem;
+            }
+
+            .savings-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .wide-section {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                padding: 2rem;
+            }
+
+            .wide-image-container {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+
+            .referrals-section {
+                padding: 2rem;
+            }
+
+            .referrals-amount {
+                font-size: 3rem;
+            }
+
+            .referrals-section h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 0.75rem;
+            }
+
+            .logo img {
+                max-height: 35px;
+                max-width: 120px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.5rem;
+            }
+
+            .nav-links a {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.9rem;
+            }
+
+            .section-title {
+                font-size: 1.3rem;
+            }
+            .section-content {
+                font-size: 1rem;
+            }
+
+            .hero-section h1 {
+                font-size: 1.3rem;
+            }
+
+            .hero-section p {
+                font-size: 0.8rem;
+            }
+
+            .referrals-amount {
+                font-size: 2.5rem;
+            }
+
+            .referrals-description {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">
+                <img src='media/logo-wide.svg' alt="Your Logo">
+            </div>
+            <ul class="nav-links">
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#referrals">Referrals</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <video class="hero-video" autoplay muted playsinline id="heroVideo">
+                    <source src="media/exhaust-grill.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="hero-content">
+                    <h1>Smart Ventilation That Cuts Costs Automatically</h1>
+                    <p>Restaurants save $1-10K/year after installing Demand Control Kitchen Ventilation.</p>
+                </div>
+            </section>
+
+            <!-- Savings Section -->
+            <section class="content-section">
+                <h2 class="section-title">Where the Savings Come From</h2>
+                <div class="savings-grid">
+                    <div class="savings-item">
+                        <div class="savings-video-container">
+                            <img src="media/space-heating.png" class="card-image">
+                        </div>
+                        <div class="savings-text">
+                            <h3 class="savings-heading">Space Heating</h3>
+                            <p class="savings-description">By exhausting less air, you can keep more warm air in the building.</p>
+                        </div>
+                    </div>
+
+                    <div class="savings-item">
+                        <div class="savings-video-container">
+                            <img src="media/electrical.png" class="card-image">
+                        </div>
+                        <div class="savings-text">
+                            <h3 class="savings-heading">Electrical</h3>
+                            <p class="savings-description">By running your exhaust fan slower, you will pay less on hydro bills.</p>
+                        </div>
+                    </div>
+
+                    <div class="savings-item">
+                        <div class="savings-video-container">
+                            <img src="media/rebates.png" class="card-image">
+                        </div>
+                        <div class="savings-text">
+                            <h3 class="savings-heading">Rebates</h3>
+                            <p class="savings-description">Green-energy rebates save you money on the capital cost of installation.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Wide Feature Section -->
+            <section class="content-section">
+                <h2 class="section-title">Steps to Savings</h2>
+                <div class="wide-section">
+                    <div class="wide-text">
+                        <div class="step-item">
+                            <h3 class="savings-heading">Get in touch</h3>
+                            <p class="wide-description">Reach out via our contact page and we will handle it from there.</p>
+                        </div>
+
+                        <div class="step-item">
+                            <h3 class="savings-heading">Site Visit</h3>
+                            <p class="wide-description">We will assess yearly savings and rebate eligibility.</p>
+                        </div>
+
+                        <div class="step-item">
+                            <h3 class="savings-heading">Installation</h3>
+                            <p class="wide-description">We install our control system with no down time to your restaurant.</p>
+                        </div>
+                    </div>
+                    <div class="wide-image-container">
+                        <img src="media/handshake.png" alt="Feature Image" class="wide-image">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Referrals Section -->
+            <section id="referrals" class="referrals-section">
+                <h2>Earn Cash for Referrals</h2>
+                <div class="referrals-amount">$750</div>
+                <p class="referrals-description">Get paid for every successful referral to restaurant owners who install our system.</p>
+                
+                <div class="referrals-details">
+                    <h3>How It Works</h3>
+                    <p>Know a restaurant owner who could benefit from smart ventilation? Refer them to us and earn $750 for each successful installation. It's that simple – help restaurants save money while earning cash for yourself.</p>
+                </div>
+            </section>
+
+            <section id="how-it-works" class="content-section">
+                <h2 class="section-title">How It Works</h2>
+                <div class="section-content">
+                    <p>Demand Control Kitchen Ventilation (DCKV) systems transform your traditional kitchen hood into an intelligent, automated ventilation system that responds to actual cooking activity rather than running at full speed constantly.</p>
+                    
+                    <h3 style="font-size: 1.5rem; margin: 2rem 0 1rem 0; color: #333;">Smart Sensors</h3>
+                    <p>Our system uses advanced sensors strategically placed in your kitchen hood to continuously monitor cooking conditions. These sensors detect temperature changes, humidity levels, and smoke generated by your cooking equipment in real-time.</p>
+                    
+                    <h3 style="font-size: 1.5rem; margin: 2rem 0 1rem 0; color: #333;">Variable Speed Fan Control</h3>
+                    <p>Based the temperature sensor readings, motor controllers automatically make adjustments to the speed of your exhaust fan motors. When your exhaust motors previously could only turn on and off, they now work like a dimmer switch on a light, changing anywhere from 0-100%.</p>
+                    
+                    <h3 style="font-size: 1.5rem; margin: 2rem 0 1rem 0; color: #333;">Automatic Operation</h3>
+                    <p>When cooking activity is light or absent, the system automatically reduces fan speed to the minimum required level. When sensors detect smoke or other airborne contaminants, they trigger the variable frequency drives to adjust the exhaust fan speed to ensure adequate evacuation.</p>
+                    
+                    <h3 style="font-size: 1.5rem; margin: 2rem 0 1rem 0; color: #333;">Energy Savings in Action</h3>
+                    <p>Field studies suggest that energy savings could be 60% or more depending on the facility and type of operation. By running fans only as fast as needed, the system dramatically reduces energy consumption while maintaining proper ventilation and safety standards.</p>
+                    
+                    <p style="margin-top: 2rem; font-weight: 600; color: #333;">The result? Your kitchen ventilation works smarter, not harder – automatically adjusting to save energy while keeping your kitchen properly ventilated and safe.</p>
+                </div>
+            </section>
+
+            <section id="contact" class="content-section">
+                <h2 class="section-title">Contact</h2>
+                <div class="section-content">
+                    <p>Add your contact information and forms here. The page will grow vertically as needed.</p>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2025 Your Company Name. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Get navbar height dynamically
+        function getNavbarHeight() {
+            const navbar = document.querySelector('.navbar');
+            return navbar ? navbar.offsetHeight : 0;
+        }
+
+        // Update scroll padding dynamically based on navbar height
+        function updateScrollPadding() {
+            const navbarHeight = getNavbarHeight();
+            document.documentElement.style.scrollPaddingTop = `${navbarHeight + 20}px`;
+        }
+
+        // Initialize scroll padding on page load
+        document.addEventListener('DOMContentLoaded', updateScrollPadding);
+        window.addEventListener('resize', updateScrollPadding);
+
+        // Smooth scrolling for navigation links with proper navbar offset
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const navbarHeight = getNavbarHeight();
+                    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navbarHeight - 20;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Video ping-pong effect (forward and backward)
+        const video = document.getElementById('heroVideo');
+        let isReversing = false;
+
+        video.addEventListener('loadedmetadata', function() {
+            video.play();
+        });
+
+        video.addEventListener('ended', function() {
+            if (!isReversing) {
+                // Video reached the end, start reversing
+                isReversing = true;
+                reverseVideo();
+            }
+        });
+
+        function reverseVideo() {
+            const interval = setInterval(() => {
+                if (video.currentTime <= 0) {
+                    // Reached the beginning, start playing forward again
+                    clearInterval(interval);
+                    isReversing = false;
+                    video.play();
+                } else {
+                    // Step backward
+                    video.currentTime -= 0.033; // Roughly 30fps backward
+                }
+            }, 33); // 33ms = roughly 30fps
+        }
+
+        // Video autoplay on hover for savings section
+        document.querySelectorAll('.savings-video').forEach(video => {
+            video.addEventListener('mouseenter', () => {
+                video.play();
+            });
+            
+            video.addEventListener('mouseleave', () => {
+                video.pause();
+            });
+        });
+
+        // Add active state to navigation links based on scroll position
+        function updateActiveNav() {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-links a');
+            const navbarHeight = getNavbarHeight();
+            const scrollPos = window.pageYOffset;
+            
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top + window.pageYOffset;
+                const sectionHeight = section.offsetHeight;
+                
+                // Check if we're in the section (with navbar offset consideration)
+                if (scrollPos >= sectionTop - navbarHeight - 100 && 
+                    scrollPos < sectionTop + sectionHeight - navbarHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // Throttle scroll events for better performance
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            if (scrollTimeout) {
+                clearTimeout(scrollTimeout);
+            }
+            scrollTimeout = setTimeout(updateActiveNav, 10);
+        });
+
+        // Initial call to set active nav
+        updateActiveNav();
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
