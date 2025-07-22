@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Website</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Minimax Energy</title>
     <style>
         * {
             margin: 0;
@@ -19,9 +18,45 @@
             background-color: #fff;
         }
 
+        /* Typography */
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            line-height: 1.4;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            color: #666;
+        }
+
         /* Add scroll padding to account for sticky navbar */
         html {
-            scroll-padding-top: 120px; /* Adjust based on navbar height */
+            scroll-padding-top: 120px;
+        }
+
+        .nav-text {
+            text-align: center;
         }
 
         .container {
@@ -34,13 +69,15 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 1rem 2rem;
             background-color: #fff;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             position: sticky;
+            padding: 1rem 2rem;
             top: 0;
             z-index: 100;
             width: 100%;
+
+            z-index: 100;
         }
 
         .navbar-content {
@@ -77,11 +114,13 @@
             justify-content: center;
             font-size: 0.9rem;
             color: #666;
-            border-radius: 4px;
+            border-radius: 6px;
         }
 
         .nav-links {
             display: flex;
+            width: 100%;
+            justify-content: right;
             list-style: none;
             gap: 2rem;
         }
@@ -91,26 +130,95 @@
         }
 
         .nav-links a {
+white-space: nowrap;
             text-decoration: none;
+            text-align: center;
             color: #333;
             font-weight: 500;
-            padding: 0.5rem 1rem;
             border-radius: 6px;
             transition: all 0.3s ease;
         }
 
-        .nav-links a:hover {
-            background-color: #f8f9fa;
-            color: #666;
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            padding: 10px;
+            z-index: 101;
         }
 
-        .nav-links a.active {
-            background-color: #666;
-            color: white;
+        .hamburger .line {
+            width: 30px;
+            height: 3px;
+            background-color: #333;
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+
+        /* Mobile Menu Styles */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                max-width: 300px;
+                height: 100vh;
+                background-color: #fff;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 2rem;
+                transition: right 0.3s ease;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+                z-index: 100;
+                padding: 2rem 0;
+            }
+            
+            .nav-links.active {
+                right: 0;
+            }
+            
+            .hamburger.active .line:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+            
+            .hamburger.active .line:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .hamburger.active .line:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -6px);
+            }
+            
+            /* Overlay when menu is open */
+            .overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 99;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.3s ease, visibility 0.3s ease;
+            }
+            
+            .overlay.active {
+                opacity: 1;
+                visibility: visible;
+            }
         }
 
         /* Main Content Area */
         .main-content {
+            justify-content: center;
             padding: 3rem 2rem;
             min-height: calc(100vh - 82px);
         }
@@ -128,9 +236,10 @@
             justify-content: center;
             text-align: center;
             color: white;
-            border-radius: 12px;
+            border-radius: 6px;
             margin-bottom: 3rem;
             overflow: hidden;
+            max-height: 512px;
         }
 
         .hero-video {
@@ -163,17 +272,14 @@
         }
 
         .hero-section h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            font-weight: 700;
+            color: white;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .hero-section p {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             opacity: 0.95;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-            font-weight: 400;
         }
 
         .card-image {
@@ -184,15 +290,7 @@
         }
 
         .section-title {
-            font-size: 2rem;
             margin-bottom: 1.5rem;
-            color: #333;
-        }
-
-        .section-content {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: #666;
         }
 
         /* Savings Grid Section */
@@ -210,20 +308,15 @@
             display: flex;
             flex-direction: column;
             background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 6px;
             overflow: hidden;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             max-width: 400px;
             margin: 0 auto;
         }
 
-        .savings-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        }
-
         .savings-video-container {
+            border-radius: 6px;
             position: relative;
             width: 100%;
             aspect-ratio: 1/1;
@@ -238,64 +331,65 @@
         }
 
         .savings-text {
-            padding: 1.5rem;
+            padding: 1.5rem 0 0 0;
             text-align: left;
         }
 
         .savings-heading {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #333;
             margin-bottom: 0.75rem;
-            line-height: 1.3;
         }
 
         .savings-description {
             font-size: 1rem;
             line-height: 1.6;
-            color: #666;
+            color: #6a6a6a;
             margin: 0;
         }
 
         /* Wide Feature Section */
-        .wide-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            padding: 3rem;
-            margin-top: 2rem;
-        }
+.wide-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start; /* Changed from center to start */
+    max-width: 1200px;
+    background: #fff;
+}
 
-        .wide-text {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+.wide-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%; /* Ensure it takes full height */
+}
+
+.wide-image-container {
+    position: relative;
+    width: 100%;
+    height: 100%; /* Take full height of grid cell */
+    overflow: hidden;
+    border-radius: 6px;
+}
+
+.wide-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
 
         .wide-heading {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #333;
             margin-bottom: 1.5rem;
-            line-height: 1.3;
         }
 
         .wide-description {
             font-size: 1.1rem;
             line-height: 1.8;
-            color: #666;
         }
 
         /* Step items in the wide section */
         .step-item {
-            margin-bottom: 4rem;
-
+            margin-bottom: 2rem;
         }
 
         .step-item:last-child {
@@ -303,7 +397,6 @@
         }
 
         .step-item .savings-heading {
-            font-size: 1.3rem;
             margin-bottom: 0.5rem;
         }
 
@@ -311,68 +404,184 @@
             margin-bottom: 0;
         }
 
-        .wide-image-container {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 1/1;
-            overflow: hidden;
-            border-radius: 12px;
-        }
-
-        .wide-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
 
         /* Referrals Section */
         .referrals-section {
             background: linear-gradient(135deg, #22c55e 0%, #15803d 100%);
-            border-radius: 12px;
+            border-radius: 6px;
             padding: 3rem;
             text-align: center;
-            color: white;
+            color: white !important ;
             margin: 3rem 0;
-        }
+            
 
-        .referrals-section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            font-weight: 700;
-        }
-
-        .referrals-amount {
-            font-size: 4rem;
-            font-weight: 800;
-            margin: 1rem 0;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
+        .referrals-section h2 {
+            margin-bottom: 1rem;
+        }
+
+        .referrals-amount {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin: 1rem 0;
+        }
+
         .referrals-description {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             margin-bottom: 2rem;
             opacity: 0.95;
         }
 
         .referrals-details {
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
+            border-radius: 6px;
             padding: 2rem;
             margin-top: 2rem;
             backdrop-filter: blur(10px);
         }
 
         .referrals-details h3 {
-            font-size: 1.5rem;
             margin-bottom: 1rem;
             color: #fff;
         }
 
         .referrals-details p {
-            font-size: 1.1rem;
-            line-height: 1.6;
             opacity: 0.9;
+        }
+
+        /* Contact Form Styles */
+        .contact-form {
+            background: #fff;
+            border-radius: 6px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 3rem;
+            max-width: 800px;
+            margin: 2rem auto;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+            font-size: 1rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background-color: #fff;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #22c55e;
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #9ca3af;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #22c55e 0%, #15803d 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .contact-card {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 6px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+
+        .contact-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .contact-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .contact-card a {
+            color: #22c55e;
+            text-decoration: none;
+        }
+
+        .contact-card a:hover {
+            text-decoration: underline;
+        }
+
+        /* Form success message */
+        .form-success {
+            background: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 2rem;
+            border: 1px solid #c3e6cb;
+            display: none;
+        }
+
+        .form-success.show {
+            display: block;
         }
 
         /* Footer */
@@ -393,8 +602,32 @@
         }
 
         @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2, .section-title {
+                font-size: 1.7rem;
+            }
+            
+            h3 {
+                font-size: 1.3rem;
+            }
+            
+            .hero-section h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero-section p {
+                font-size: 1.1rem;
+            }
+            
+            .referrals-amount {
+                font-size: 2.5rem;
+            }
+
             .navbar-content {
-                flex-direction: column;
+                flex-direction: row;
                 gap: 1rem;
             }
 
@@ -407,16 +640,12 @@
                 gap: 1rem;
             }
 
-            .hero-section h1 {
-                font-size: 2rem;
-            }
-
-            .hero-section p {
-                font-size: 1.2rem;
-            }
-
             .main-content {
                 padding: 2rem 1rem;
+            }
+
+            .savings-item {
+                width: 70%;
             }
 
             .savings-grid {
@@ -439,16 +668,44 @@
                 padding: 2rem;
             }
 
-            .referrals-amount {
-                font-size: 3rem;
-            }
-
             .referrals-section h2 {
-                font-size: 2rem;
+                font-size: 1.7rem;
             }
         }
 
         @media (max-width: 480px) {
+            h1 {
+                font-size: 1.7rem;
+            }
+            
+            h2, .section-title {
+                font-size: 1.4rem;
+            }
+            
+            h3 {
+                font-size: 1.2rem;
+            }
+            
+            p {
+                font-size: 1rem;
+            }
+
+            .hero-section h1 {
+                font-size: 1.5rem;
+            }
+
+            .hero-section p {
+                font-size: 1rem;
+            }
+
+            .referrals-amount {
+                font-size: 2.2rem;
+            }
+
+            .referrals-description {
+                font-size: 1rem;
+            }
+
             .navbar {
                 padding: 0.75rem;
             }
@@ -465,31 +722,11 @@
             }
 
             .nav-links a {
-                padding: 0.4rem 0.8rem;
                 font-size: 0.9rem;
             }
 
-            .section-title {
-                font-size: 1.3rem;
-            }
-            .section-content {
-                font-size: 1rem;
-            }
-
-            .hero-section h1 {
-                font-size: 1.3rem;
-            }
-
-            .hero-section p {
-                font-size: 0.8rem;
-            }
-
-            .referrals-amount {
-                font-size: 2.5rem;
-            }
-
-            .referrals-description {
-                font-size: 1.1rem;
+            .form-row {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -501,14 +738,49 @@
             <div class="logo">
                 <img src='media/logo-wide.svg' alt="Your Logo">
             </div>
+            <div class="hamburger">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
             <ul class="nav-links">
-                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a class="nav-text" href="#how-it-works">How It Works</a></li>
+                <li><a href="#eligibility">Eligibility</a></li>
+                <li><a href="#next-steps">Next Steps</a></li>
                 <li><a href="#referrals">Referrals</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
+            <div class="overlay"></div>
         </div>
     </nav>
 
+<script>
+        // Hamburger menu functionality
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        const overlay = document.querySelector('.overlay');
+        
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
+        
+        overlay.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navLinks.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+        
+        // Close menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+                overlay.classList.remove('active');
+            });
+        });
+    </script>
     <div class="container">
         <!-- Main Content -->
         <main class="main-content">
@@ -519,11 +791,41 @@
                     Your browser does not support the video tag.
                 </video>
                 <div class="hero-content">
-                    <h1>Smart Ventilation That Cuts Costs Automatically</h1>
-                    <p>Restaurants save $1-10K/year after installing Demand Control Kitchen Ventilation.</p>
+                    <h1 style="margin: 6px;">Smart Ventilation That Cuts Costs Automatically</h1>
+                    <p style="margin: 6px 0px; color: #fff;" >Restaurants save $1-10K/year after installing Demand Control Kitchen Ventilation.</p>
                 </div>
             </section>
 
+<section id="how-it-works" class="content-section">
+                <h2 class="section-title">How It Works</h2>
+                <div class="section-content">
+                    <p>Demand Control Kitchen Ventilation (DCKV) systems transform your traditional kitchen hood into an intelligent, automated ventilation system that responds to actual cooking activity rather than running at full speed constantly.</p>
+                    
+                    <div class="eligibility-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                        <div class="eligibility-item" style="background: #f8f9fa; padding: 1.5rem; border-radius: 6px; border-left: 4px solid #22c55e;">
+                            <h3 style="font-size: 1.3rem; margin-bottom: 0.5rem; color: #333;">Smart Sensors</h3>
+                            <p style="color: #666;">Our system uses advanced sensors placed in your kitchen hood to monitor temperature changes, humidity levels, and smoke generated by your cooking equipment in real-time.</p>
+                        </div>
+                        
+                        <div class="eligibility-item" style="background: #f8f9fa; padding: 1.5rem; border-radius: 6px; border-left: 4px solid #22c55e;">
+                            <h3 style="font-size: 1.3rem; margin-bottom: 0.5rem; color: #333;">Fan Speed Control</h3>
+                            <p style="color: #666;">Based on temperature sensor readings, motor controllers automatically adjust the speed of your exhaust fan motors. Exhaust motors now run at speeds from 50-100% based on demand measured by the sensors.</p>
+                        </div>
+
+                        <div class="eligibility-item" style="background: #f8f9fa; padding: 1.5rem; border-radius: 6px; border-left: 4px solid #22c55e;">
+                            <h3 style="font-size: 1.3rem; margin-bottom: 0.5rem; color: #333;">Automatic Operation</h3>
+                            <p style="color: #666;">When cooking activity is light (for example between lunch and dinner), the system automatically reduces fan speed. When sensors detect smoke or other airborne contaminants, they adjust the exhaust fan speed to ensure adequate evacuation.</p>
+                        </div>
+
+                        <div class="eligibility-item" style="background: #f8f9fa; padding: 1.5rem; border-radius: 6px; border-left: 4px solid #22c55e;">
+                            <h3 style="font-size: 1.3rem; margin-bottom: 0.5rem; color: #333;">Energy Savings in Action</h3>
+                            <p style="color: #666;">Field studies suggest that energy savings could be 60% or more depending on the facility and type of operation. By running fans only as fast as needed, the system dramatically reduces energy consumption while maintaining proper ventilation and safety standards.</p>
+                        </div>
+                    </div>
+                    
+                    <p style="margin-top: 2rem; font-weight: 600;">The result? Your kitchen ventilation works smarter, not harder – automatically adjusting to save energy while keeping your kitchen properly ventilated and safe.</p>
+                </div>
+            </section>
             <!-- Savings Section -->
             <section class="content-section">
                 <h2 class="section-title">Where the Savings Come From</h2>
@@ -560,76 +862,132 @@
                 </div>
             </section>
 
+
+<!-- Eligibility Section -->
+<section id="eligibility" class="content-section">
+    <h2 class="section-title">Eligibility Requirements</h2>
+    <div class="section-content">
+        <p>To qualify for our Demand Control Kitchen Ventilation system, your restaurant must meet the following criteria:</p>
+        
+        <div class="eligibility-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
+            <div class="eligibility-item" style="background: #f8f9fa; padding: 1.5rem; border-radius: 6px; border-left: 4px solid #22c55e;">
+                <h3 style="font-size: 1.3rem; margin-bottom: 0.5rem; color: #333;">Independent Ownership</h3>
+                <p style="color: #666;">The restaurant owner operates no more than 10 restaurant locations.</p>
+            </div>
+            
+            <div class="eligibility-item" style="background: #f8f9fa; padding: 1.5rem; border-radius: 6px; border-left: 4px solid #22c55e;">
+                <h3 style="font-size: 1.3rem; margin-bottom: 0.5rem; color: #333;">Ventilation System</h3>
+                <p style="color: #666;">Your restaurant must have a natural gas fueled Make-Up Air (MUA) system.</p>
+            </div>
+
+
+            <div class="eligibility-item" style="background: #f8f9fa; padding: 1.5rem; border-radius: 6px; border-left: 4px solid #22c55e;">
+                <h3 style="font-size: 1.3rem; margin-bottom: 0.5rem; color: #333;">Consumption</h3>
+                <p style="color: #666;">Annual natural gas consumption must be less than 100,000 cubic meters based on a three year average.</p>
+            </div>
+        </div>
+        
+        <p style="margin-top: 2rem; font-weight: 600; color: #333;">Not sure if you qualify? <a href="#contact" style="color: #22c55e; text-decoration: none;">Contact us</a> for a free assessment.</p>
+    </div>
+</section>
+
+
             <!-- Wide Feature Section -->
-            <section class="content-section">
-                <h2 class="section-title">Steps to Savings</h2>
-                <div class="wide-section">
-                    <div class="wide-text">
-                        <div class="step-item">
-                            <h3 class="savings-heading">Get in touch</h3>
-                            <p class="wide-description">Reach out via our contact page and we will handle it from there.</p>
-                        </div>
-
-                        <div class="step-item">
-                            <h3 class="savings-heading">Site Visit</h3>
-                            <p class="wide-description">We will assess yearly savings and rebate eligibility.</p>
-                        </div>
-
-                        <div class="step-item">
-                            <h3 class="savings-heading">Installation</h3>
-                            <p class="wide-description">We install our control system with no down time to your restaurant.</p>
-                        </div>
-                    </div>
-                    <div class="wide-image-container">
-                        <img src="media/handshake.png" alt="Feature Image" class="wide-image">
-                    </div>
-                </div>
-            </section>
-
+<section id="next-steps" class="content-section">
+    <h2 class="section-title">Steps to Savings</h2>
+    <div class="section-content">
+        <div class="eligibility-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
+            <div class="eligibility-item" style="background: #f8f9fa; padding: 1.5rem; border-radius: 6px; border-left: 4px solid #22c55e;">
+                <h3 style="font-size: 1.3rem; margin-bottom: 0.5rem; color: #333;">Get in Touch</h3>
+                <p style="color: #666;">Reach out to us through our contact form to discuss further. Please provide the restaurant name and address you would like to discuss.</p>
+            </div>
+            <div class="eligibility-item" style="background: #f8f9fa; padding: 1.5rem; border-radius: 6px; border-left: 4px solid #22c55e;">
+                <h3 style="font-size: 1.3rem; margin-bottom: 0.5rem; color: #333;">Eligibility Check</h3>
+                <p style="color: #666;">We will provide a free assessment to ensure your ventilation equipment meets requirements fro these programs. We will also provide an estimate of annual savings and cost of installation.</p>
+            </div>
+            <div class="eligibility-item" style="background: #f8f9fa; padding: 1.5rem; border-radius: 6px; border-left: 4px solid #22c55e;">
+                <h3 style="font-size: 1.3rem; margin-bottom: 0.5rem; color: #333;">Installation</h3>
+                <p style="color: #666;">Once provide with a quote, we will complete the rebate application paperwork, and install a system with no down time to your kitchen.</p>
+            </div>
+        </div>
+    </div>
+</section>
             <!-- Referrals Section -->
+
             <section id="referrals" class="referrals-section">
-                <h2>Earn Cash for Referrals</h2>
+
+            <h2 style="color: #fff;" class="section-title">Know a Restaurant Owner?</h2>
+                <h2 style="color: #fff;">Earn Cash for Referrals</h2>
                 <div class="referrals-amount">$750</div>
-                <p class="referrals-description">Get paid for every successful referral to restaurant owners who install our system.</p>
+                <p style="color: #fff;" class="referrals-description">Get paid for every referral.</p>
                 
                 <div class="referrals-details">
                     <h3>How It Works</h3>
-                    <p>Know a restaurant owner who could benefit from smart ventilation? Refer them to us and earn $750 for each successful installation. It's that simple – help restaurants save money while earning cash for yourself.</p>
+                    <p style="color: #fff;" >Know a restaurant owner who could benefit from smart ventilation? Refer them to us and earn $750 for each successful installation. It's that simple – help restaurants save money while earning cash for yourself.</p>
                 </div>
             </section>
 
-            <section id="how-it-works" class="content-section">
-                <h2 class="section-title">How It Works</h2>
-                <div class="section-content">
-                    <p>Demand Control Kitchen Ventilation (DCKV) systems transform your traditional kitchen hood into an intelligent, automated ventilation system that responds to actual cooking activity rather than running at full speed constantly.</p>
-                    
-                    <h3 style="font-size: 1.5rem; margin: 2rem 0 1rem 0; color: #333;">Smart Sensors</h3>
-                    <p>Our system uses advanced sensors strategically placed in your kitchen hood to continuously monitor cooking conditions. These sensors detect temperature changes, humidity levels, and smoke generated by your cooking equipment in real-time.</p>
-                    
-                    <h3 style="font-size: 1.5rem; margin: 2rem 0 1rem 0; color: #333;">Variable Speed Fan Control</h3>
-                    <p>Based the temperature sensor readings, motor controllers automatically make adjustments to the speed of your exhaust fan motors. When your exhaust motors previously could only turn on and off, they now work like a dimmer switch on a light, changing anywhere from 0-100%.</p>
-                    
-                    <h3 style="font-size: 1.5rem; margin: 2rem 0 1rem 0; color: #333;">Automatic Operation</h3>
-                    <p>When cooking activity is light or absent, the system automatically reduces fan speed to the minimum required level. When sensors detect smoke or other airborne contaminants, they trigger the variable frequency drives to adjust the exhaust fan speed to ensure adequate evacuation.</p>
-                    
-                    <h3 style="font-size: 1.5rem; margin: 2rem 0 1rem 0; color: #333;">Energy Savings in Action</h3>
-                    <p>Field studies suggest that energy savings could be 60% or more depending on the facility and type of operation. By running fans only as fast as needed, the system dramatically reduces energy consumption while maintaining proper ventilation and safety standards.</p>
-                    
-                    <p style="margin-top: 2rem; font-weight: 600; color: #333;">The result? Your kitchen ventilation works smarter, not harder – automatically adjusting to save energy while keeping your kitchen properly ventilated and safe.</p>
+<section id="contact" class="content-section">
+        <h2 class="section-title">Contact Us</h2>
+        <div class="section-content">
+            <p>Ready to start saving on your restaurant's energy costs? Get in touch with us today for a free consultation and savings assessment.</p>
+        </div>
+        <div class="contact-form">
+            <form id="contactForm" action="https://formspree.io/f/xvgqzjnl" method="POST">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name *</label>
+                        <input type="text" id="firstName" name="firstName" required placeholder="Enter your first name">
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name *</label>
+                        <input type="text" id="lastName" name="lastName" required placeholder="Enter your last name">
+                    </div>
                 </div>
-            </section>
-
-            <section id="contact" class="content-section">
-                <h2 class="section-title">Contact</h2>
-                <div class="section-content">
-                    <p>Add your contact information and forms here. The page will grow vertically as needed.</p>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required placeholder="your.email@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567">
+                    </div>
                 </div>
-            </section>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="company">Restaurant/Company Name *</label>
+                        <input type="text" id="company" name="company" required placeholder="Your restaurant or company name">
+                    </div>
+                    <div class="form-group">
+                        <label for="inquiryType">Type of Inquiry</label>
+                        <select id="inquiryType" name="inquiryType">
+                            <option value="">Select inquiry type</option>
+                            <option value="savings-assessment">Free Savings Assessment</option>
+                            <option value="referral">Referral Program</option>
+                            <option value="general">General Question</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message *</label>
+                    <textarea id="message" name="message" required placeholder="Tell us about your restaurant and how we can help you save on energy costs..."></textarea>
+                </div>
+                
+                <!-- Hidden fields for Formspree -->
+                <input type="hidden" name="_subject" value="New Restaurant Energy Consultation Request">
+                <input type="hidden" name="_next" value="thank-you.html">
+                
+                <button type="submit" class="submit-btn" id="submitBtn">Send Message</button>
+            </form>
+        </div>
+    </section>
         </main>
 
         <!-- Footer -->
         <footer class="footer">
-            <p>&copy; 2025 Your Company Name. All rights reserved.</p>
+            <p>&copy; 2025 Minimax Energy. All rights reserved.</p>
         </footer>
     </div>
 
